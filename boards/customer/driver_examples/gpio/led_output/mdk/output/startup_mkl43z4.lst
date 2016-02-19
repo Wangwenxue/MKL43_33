@@ -1,0 +1,708 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         ; * ----------------------------------------------------
+                       -----------------------------------
+    2 00000000         ; *  @file:    startup_MKL43Z4.s
+    3 00000000         ; *  @purpose: CMSIS Cortex-M0P Core Device Startup File
+                       
+    4 00000000         ; *            MKL43Z4
+    5 00000000         ; *  @version: 1.6
+    6 00000000         ; *  @date:    2015-7-29
+    7 00000000         ; *  @build:   b151105
+    8 00000000         ; * ----------------------------------------------------
+                       -----------------------------------
+    9 00000000         ; *
+   10 00000000         ; * Copyright (c) 1997 - 2015 , Freescale Semiconductor,
+                        Inc.
+   11 00000000         ; * All rights reserved.
+   12 00000000         ; *
+   13 00000000         ; * Redistribution and use in source and binary forms, w
+                       ith or without modification,
+   14 00000000         ; * are permitted provided that the following conditions
+                        are met:
+   15 00000000         ; *
+   16 00000000         ; * o Redistributions of source code must retain the abo
+                       ve copyright notice, this list
+   17 00000000         ; *   of conditions and the following disclaimer.
+   18 00000000         ; *
+   19 00000000         ; * o Redistributions in binary form must reproduce the 
+                       above copyright notice, this
+   20 00000000         ; *   list of conditions and the following disclaimer in
+                        the documentation and/or
+   21 00000000         ; *   other materials provided with the distribution.
+   22 00000000         ; *
+   23 00000000         ; * o Neither the name of Freescale Semiconductor, Inc. 
+                       nor the names of its
+   24 00000000         ; *   contributors may be used to endorse or promote pro
+                       ducts derived from this
+   25 00000000         ; *   software without specific prior written permission
+                       .
+   26 00000000         ; *
+   27 00000000         ; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS A
+                       ND CONTRIBUTORS "AS IS" AND
+   28 00000000         ; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NO
+                       T LIMITED TO, THE IMPLIED
+   29 00000000         ; * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PART
+                       ICULAR PURPOSE ARE
+   30 00000000         ; * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER O
+                       R CONTRIBUTORS BE LIABLE FOR
+   31 00000000         ; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY
+                       , OR CONSEQUENTIAL DAMAGES
+   32 00000000         ; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBST
+                       ITUTE GOODS OR SERVICES;
+   33 00000000         ; * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPT
+                       ION) HOWEVER CAUSED AND ON
+   34 00000000         ; * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+                        LIABILITY, OR TORT
+   35 00000000         ; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY W
+                       AY OUT OF THE USE OF THIS
+   36 00000000         ; * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+                        DAMAGE.
+   37 00000000         ; *
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   38 00000000         ; *------- <<< Use Configuration Wizard in Context Menu 
+                       >>> ------------------
+   39 00000000         ; *
+   40 00000000         ; ******************************************************
+                       ***********************/
+   41 00000000         
+   42 00000000         
+   43 00000000                 PRESERVE8
+   44 00000000                 THUMB
+   45 00000000         
+   46 00000000         
+   47 00000000         ; Vector Table Mapped to Address 0 at Reset
+   48 00000000         
+   49 00000000                 AREA             RESET, DATA, READONLY
+   50 00000000                 EXPORT           __Vectors
+   51 00000000                 EXPORT           __Vectors_End
+   52 00000000                 EXPORT           __Vectors_Size
+   53 00000000                 IMPORT           |Image$$ARM_LIB_STACK$$ZI$$Limi
+t|
+   54 00000000         
+   55 00000000 00000000 
+                       __Vectors
+                               DCD              |Image$$ARM_LIB_STACK$$ZI$$Limi
+t| 
+                                                            ; Top of Stack
+   56 00000004 00000000        DCD              Reset_Handler ; Reset Handler
+   57 00000008 00000000        DCD              NMI_Handler ;NMI Handler
+   58 0000000C 00000000        DCD              HardFault_Handler 
+                                                            ;Hard Fault Handler
+                                                            
+   59 00000010 00000000        DCD              0           ;Reserved
+   60 00000014 00000000        DCD              0           ;Reserved
+   61 00000018 00000000        DCD              0           ;Reserved
+   62 0000001C 00000000        DCD              0           ;Reserved
+   63 00000020 00000000        DCD              0           ;Reserved
+   64 00000024 00000000        DCD              0           ;Reserved
+   65 00000028 00000000        DCD              0           ;Reserved
+   66 0000002C 00000000        DCD              SVC_Handler ;SVCall Handler
+   67 00000030 00000000        DCD              0           ;Reserved
+   68 00000034 00000000        DCD              0           ;Reserved
+   69 00000038 00000000        DCD              PendSV_Handler ;PendSV Handler
+   70 0000003C 00000000        DCD              SysTick_Handler 
+                                                            ;SysTick Handler
+   71 00000040         
+   72 00000040         ;External Interrupts
+   73 00000040 00000000        DCD              DMA0_IRQHandler ;DMA channel 0 
+                                                            transfer complete
+   74 00000044 00000000        DCD              DMA1_IRQHandler ;DMA channel 1 
+                                                            transfer complete
+   75 00000048 00000000        DCD              DMA2_IRQHandler ;DMA channel 2 
+                                                            transfer complete
+   76 0000004C 00000000        DCD              DMA3_IRQHandler ;DMA channel 3 
+                                                            transfer complete
+   77 00000050 00000000        DCD              Reserved20_IRQHandler 
+                                                            ;Reserved interrupt
+                                                            
+   78 00000054 00000000        DCD              FTFA_IRQHandler ;Command comple
+                                                            te and read collisi
+                                                            on
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   79 00000058 00000000        DCD              PMC_IRQHandler ;Low-voltage det
+                                                            ect, low-voltage wa
+                                                            rning
+   80 0000005C 00000000        DCD              LLWU_IRQHandler 
+                                                            ;Low leakage wakeup
+                                                            
+   81 00000060 00000000        DCD              I2C0_IRQHandler ;I2C0 interrupt
+                                                            
+   82 00000064 00000000        DCD              I2C1_IRQHandler ;I2C1 interrupt
+                                                            
+   83 00000068 00000000        DCD              SPI0_IRQHandler ;SPI0 single in
+                                                            terrupt vector for 
+                                                            all sources
+   84 0000006C 00000000        DCD              SPI1_IRQHandler ;SPI1 single in
+                                                            terrupt vector for 
+                                                            all sources
+   85 00000070 00000000        DCD              LPUART0_IRQHandler ;LPUART0 sta
+                                                            tus and error
+   86 00000074 00000000        DCD              LPUART1_IRQHandler ;LPUART1 sta
+                                                            tus and error
+   87 00000078 00000000        DCD              UART2_FLEXIO_IRQHandler 
+                                                            ;UART2 or FLEXIO
+   88 0000007C 00000000        DCD              ADC0_IRQHandler ;ADC0 interrupt
+                                                            
+   89 00000080 00000000        DCD              CMP0_IRQHandler ;CMP0 interrupt
+                                                            
+   90 00000084 00000000        DCD              TPM0_IRQHandler ;TPM0 single in
+                                                            terrupt vector for 
+                                                            all sources
+   91 00000088 00000000        DCD              TPM1_IRQHandler ;TPM1 single in
+                                                            terrupt vector for 
+                                                            all sources
+   92 0000008C 00000000        DCD              TPM2_IRQHandler ;TPM2 single in
+                                                            terrupt vector for 
+                                                            all sources
+   93 00000090 00000000        DCD              RTC_IRQHandler ;RTC alarm
+   94 00000094 00000000        DCD              RTC_Seconds_IRQHandler 
+                                                            ;RTC seconds
+   95 00000098 00000000        DCD              PIT_IRQHandler ;PIT interrupt
+   96 0000009C 00000000        DCD              I2S0_IRQHandler ;I2S0 interrupt
+                                                            
+   97 000000A0 00000000        DCD              USB0_IRQHandler ;USB0 interrupt
+                                                            
+   98 000000A4 00000000        DCD              DAC0_IRQHandler ;DAC0 interrupt
+                                                            
+   99 000000A8 00000000        DCD              Reserved42_IRQHandler 
+                                                            ;Reserved interrupt
+                                                            
+  100 000000AC 00000000        DCD              Reserved43_IRQHandler 
+                                                            ;Reserved interrupt
+                                                            
+  101 000000B0 00000000        DCD              LPTMR0_IRQHandler 
+                                                            ;LPTMR0 interrupt
+  102 000000B4 00000000        DCD              LCD_IRQHandler ;LCD interrupt
+  103 000000B8 00000000        DCD              PORTA_IRQHandler 
+                                                            ;PORTA Pin detect
+  104 000000BC 00000000        DCD              PORTCD_IRQHandler ;Single inter
+                                                            rupt vector for POR
+                                                            TC; PORTD Pin detec
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+                                                            t
+  105 000000C0         __Vectors_End
+  106 000000C0         
+  107 000000C0 000000C0 
+                       __Vectors_Size
+                               EQU              __Vectors_End - __Vectors
+  108 000000C0         
+  109 000000C0         ; <h> Flash Configuration
+  110 000000C0         ;   <i> 16-byte flash configuration field that stores de
+                       fault protection settings (loaded on reset)
+  111 000000C0         ;   <i> and security information that allows the MCU to 
+                       restrict access to the FTFL module.
+  112 000000C0         ;   <h> Backdoor Comparison Key
+  113 000000C0         ;     <o0>  Backdoor Comparison Key 0.  <0x0-0xFF:2>
+  114 000000C0         ;     <o1>  Backdoor Comparison Key 1.  <0x0-0xFF:2>
+  115 000000C0         ;     <o2>  Backdoor Comparison Key 2.  <0x0-0xFF:2>
+  116 000000C0         ;     <o3>  Backdoor Comparison Key 3.  <0x0-0xFF:2>
+  117 000000C0         ;     <o4>  Backdoor Comparison Key 4.  <0x0-0xFF:2>
+  118 000000C0         ;     <o5>  Backdoor Comparison Key 5.  <0x0-0xFF:2>
+  119 000000C0         ;     <o6>  Backdoor Comparison Key 6.  <0x0-0xFF:2>
+  120 000000C0         ;     <o7>  Backdoor Comparison Key 7.  <0x0-0xFF:2>
+  121 000000C0 000000FF 
+                       BackDoorK0
+                               EQU              0xFF
+  122 000000C0 000000FF 
+                       BackDoorK1
+                               EQU              0xFF
+  123 000000C0 000000FF 
+                       BackDoorK2
+                               EQU              0xFF
+  124 000000C0 000000FF 
+                       BackDoorK3
+                               EQU              0xFF
+  125 000000C0 000000FF 
+                       BackDoorK4
+                               EQU              0xFF
+  126 000000C0 000000FF 
+                       BackDoorK5
+                               EQU              0xFF
+  127 000000C0 000000FF 
+                       BackDoorK6
+                               EQU              0xFF
+  128 000000C0 000000FF 
+                       BackDoorK7
+                               EQU              0xFF
+  129 000000C0         ;   </h>
+  130 000000C0         ;   <h> Program flash protection bytes (FPROT)
+  131 000000C0         ;     <i> Each program flash region can be protected fro
+                       m program and erase operation by setting the associated 
+                       PROT bit.
+  132 000000C0         ;     <i> Each bit protects a 1/32 region of the program
+                        flash memory.
+  133 000000C0         ;     <h> FPROT0
+  134 000000C0         ;       <i> Program Flash Region Protect Register 0
+  135 000000C0         ;       <i> 1/32 - 8/32 region
+  136 000000C0         ;       <o.0>   FPROT0.0
+  137 000000C0         ;       <o.1>   FPROT0.1
+  138 000000C0         ;       <o.2>   FPROT0.2
+  139 000000C0         ;       <o.3>   FPROT0.3
+
+
+
+ARM Macro Assembler    Page 5 
+
+
+  140 000000C0         ;       <o.4>   FPROT0.4
+  141 000000C0         ;       <o.5>   FPROT0.5
+  142 000000C0         ;       <o.6>   FPROT0.6
+  143 000000C0         ;       <o.7>   FPROT0.7
+  144 000000C0 00000000 
+                       nFPROT0 EQU              0x00
+  145 000000C0 000000FF 
+                       FPROT0  EQU              nFPROT0:EOR:0xFF
+  146 000000C0         ;     </h>
+  147 000000C0         ;     <h> FPROT1
+  148 000000C0         ;       <i> Program Flash Region Protect Register 1
+  149 000000C0         ;       <i> 9/32 - 16/32 region
+  150 000000C0         ;       <o.0>   FPROT1.0
+  151 000000C0         ;       <o.1>   FPROT1.1
+  152 000000C0         ;       <o.2>   FPROT1.2
+  153 000000C0         ;       <o.3>   FPROT1.3
+  154 000000C0         ;       <o.4>   FPROT1.4
+  155 000000C0         ;       <o.5>   FPROT1.5
+  156 000000C0         ;       <o.6>   FPROT1.6
+  157 000000C0         ;       <o.7>   FPROT1.7
+  158 000000C0 00000000 
+                       nFPROT1 EQU              0x00
+  159 000000C0 000000FF 
+                       FPROT1  EQU              nFPROT1:EOR:0xFF
+  160 000000C0         ;     </h>
+  161 000000C0         ;     <h> FPROT2
+  162 000000C0         ;       <i> Program Flash Region Protect Register 2
+  163 000000C0         ;       <i> 17/32 - 24/32 region
+  164 000000C0         ;       <o.0>   FPROT2.0
+  165 000000C0         ;       <o.1>   FPROT2.1
+  166 000000C0         ;       <o.2>   FPROT2.2
+  167 000000C0         ;       <o.3>   FPROT2.3
+  168 000000C0         ;       <o.4>   FPROT2.4
+  169 000000C0         ;       <o.5>   FPROT2.5
+  170 000000C0         ;       <o.6>   FPROT2.6
+  171 000000C0         ;       <o.7>   FPROT2.7
+  172 000000C0 00000000 
+                       nFPROT2 EQU              0x00
+  173 000000C0 000000FF 
+                       FPROT2  EQU              nFPROT2:EOR:0xFF
+  174 000000C0         ;     </h>
+  175 000000C0         ;     <h> FPROT3
+  176 000000C0         ;       <i> Program Flash Region Protect Register 3
+  177 000000C0         ;       <i> 25/32 - 32/32 region
+  178 000000C0         ;       <o.0>   FPROT3.0
+  179 000000C0         ;       <o.1>   FPROT3.1
+  180 000000C0         ;       <o.2>   FPROT3.2
+  181 000000C0         ;       <o.3>   FPROT3.3
+  182 000000C0         ;       <o.4>   FPROT3.4
+  183 000000C0         ;       <o.5>   FPROT3.5
+  184 000000C0         ;       <o.6>   FPROT3.6
+  185 000000C0         ;       <o.7>   FPROT3.7
+  186 000000C0 00000000 
+                       nFPROT3 EQU              0x00
+  187 000000C0 000000FF 
+                       FPROT3  EQU              nFPROT3:EOR:0xFF
+  188 000000C0         ;     </h>
+  189 000000C0         ;   </h>
+  190 000000C0         ;   <h> Flash nonvolatile option byte (FOPT)
+
+
+
+ARM Macro Assembler    Page 6 
+
+
+  191 000000C0         ;     <i> Allows the user to customize the operation of 
+                       the MCU at boot time.
+  192 000000C0         ;     <o.0> LPBOOT0
+  193 000000C0         ;       <0=> Core and system clock divider (OUTDIV1) is 
+                       0x7 (divide by 8) when LPBOOT1=0 or 0x1 (divide by 2) wh
+                       en LPBOOT1=1.
+  194 000000C0         ;       <1=> Core and system clock divider (OUTDIV1) is 
+                       0x3 (divide by 4) when LPBOOT1=0 or 0x0 (divide by 1) wh
+                       en LPBOOT1=1.
+  195 000000C0         ;     <o.1> BOOTPIN_OPT
+  196 000000C0         ;       <0=> Force Boot from ROM if BOOTCFG0 asserted, w
+                       here BOOTCFG0 is the boot config function which is muxed
+                        with NMI pin
+  197 000000C0         ;       <1=> Boot source configured by FOPT (BOOTSRC_SEL
+                       ) bits
+  198 000000C0         ;     <o.2> NMI_DIS
+  199 000000C0         ;       <0=> NMI interrupts are always blocked
+  200 000000C0         ;       <1=> NMI_b pin/interrupts reset default to enabl
+                       ed
+  201 000000C0         ;     <o.3> RESET_PIN_CFG
+  202 000000C0         ;       <0=> RESET pin is disabled following a POR and c
+                       annot be enabled as reset function
+  203 000000C0         ;       <1=> RESET_b pin is dedicated
+  204 000000C0         ;     <o.4> LPBOOT1
+  205 000000C0         ;       <0=> Core and system clock divider (OUTDIV1) is 
+                       0x7 (divide by 8) when LPBOOT0=0 or 0x3 (divide by 4) wh
+                       en LPBOOT0=1.
+  206 000000C0         ;       <1=> Core and system clock divider (OUTDIV1) is 
+                       0x1 (divide by 2) when LPBOOT0=0 or 0x0 (divide by 1) wh
+                       en LPBOOT0=1.
+  207 000000C0         ;     <o.5> FAST_INIT
+  208 000000C0         ;       <0=> Slower initialization
+  209 000000C0         ;       <1=> Fast Initialization
+  210 000000C0         ;     <o.6..7> BOOTSRC_SEL
+  211 000000C0         ;       <0=> Boot from Flash
+  212 000000C0         ;       <2=> Boot from ROM
+  213 000000C0         ;       <3=> Boot from ROM
+  214 000000C0         ;         <i> Boot source selection
+  215 000000C0 0000003F 
+                       FOPT    EQU              0x3F
+  216 000000C0         ;   </h>
+  217 000000C0         ;   <h> Flash security byte (FSEC)
+  218 000000C0         ;     <i> WARNING: If SEC field is configured as "MCU se
+                       curity status is secure" and MEEN field is configured as
+                        "Mass erase is disabled",
+  219 000000C0         ;     <i> MCU's security status cannot be set back to un
+                       secure state since Mass erase via the debugger is blocke
+                       d !!!
+  220 000000C0         ;     <o.0..1> SEC
+  221 000000C0         ;       <2=> MCU security status is unsecure
+  222 000000C0         ;       <3=> MCU security status is secure
+  223 000000C0         ;         <i> Flash Security
+  224 000000C0         ;     <o.2..3> FSLACC
+  225 000000C0         ;       <2=> Freescale factory access denied
+  226 000000C0         ;       <3=> Freescale factory access granted
+  227 000000C0         ;         <i> Freescale Failure Analysis Access Code
+  228 000000C0         ;     <o.4..5> MEEN
+  229 000000C0         ;       <2=> Mass erase is disabled
+  230 000000C0         ;       <3=> Mass erase is enabled
+
+
+
+ARM Macro Assembler    Page 7 
+
+
+  231 000000C0         ;     <o.6..7> KEYEN
+  232 000000C0         ;       <2=> Backdoor key access enabled
+  233 000000C0         ;       <3=> Backdoor key access disabled
+  234 000000C0         ;         <i> Backdoor Key Security Enable
+  235 000000C0 000000FE 
+                       FSEC    EQU              0xFE
+  236 000000C0         ;   </h>
+  237 000000C0         ; </h>
+  238 000000C0                 IF               :LNOT::DEF:RAM_TARGET
+  239 000000C0                 AREA             FlashConfig, DATA, READONLY
+  240 00000000         __FlashConfig
+  241 00000000 FF FF FF 
+              FF               DCB              BackDoorK0, BackDoorK1, BackDoo
+rK2, BackDoorK3
+  242 00000004 FF FF FF 
+              FF               DCB              BackDoorK4, BackDoorK5, BackDoo
+rK6, BackDoorK7
+  243 00000008 FF FF FF 
+              FF               DCB              FPROT0    , FPROT1    , FPROT2 
+   , FPROT3
+  244 0000000C FE 3F FF 
+              FF               DCB              FSEC      , FOPT      , 0xFF   
+   , 0xFF
+  245 00000010                 ENDIF
+  246 00000010         
+  247 00000010         
+  248 00000010                 AREA             |.text|, CODE, READONLY
+  249 00000000         
+  250 00000000         ; Reset Handler
+  251 00000000         
+  252 00000000         Reset_Handler
+                               PROC
+  253 00000000                 EXPORT           Reset_Handler             [WEAK
+]
+  254 00000000                 IMPORT           SystemInit
+  255 00000000                 IMPORT           __main
+  256 00000000         
+  257 00000000                 IF               :LNOT::DEF:RAM_TARGET
+  258 00000000                 REQUIRE          FlashConfig
+  259 00000000                 ENDIF
+  260 00000000         
+  261 00000000 B672            CPSID            I           ; Mask interrupts
+  262 00000002 4813            LDR              R0, =0xE000ED08
+  263 00000004 4913            LDR              R1, =__Vectors
+  264 00000006 6001            STR              R1, [R0]
+  265 00000008 4813            LDR              R0, =SystemInit
+  266 0000000A 4780            BLX              R0
+  267 0000000C B662            CPSIE            i           ; Unmask interrupts
+                                                            
+  268 0000000E 4813            LDR              R0, =__main
+  269 00000010 4700            BX               R0
+  270 00000012                 ENDP
+  271 00000012         
+  272 00000012         
+  273 00000012         ; Dummy Exception Handlers (infinite loops which can be 
+                       modified)
+  275 00000012         NMI_Handler
+                               PROC
+  276 00000012                 EXPORT           NMI_Handler         [WEAK]
+
+
+
+ARM Macro Assembler    Page 8 
+
+
+  277 00000012 E7FE            B                .
+  278 00000014                 ENDP
+  280 00000014         HardFault_Handler
+                               PROC
+  281 00000014                 EXPORT           HardFault_Handler         [WEAK
+]
+  282 00000014 E7FE            B                .
+  283 00000016                 ENDP
+  285 00000016         SVC_Handler
+                               PROC
+  286 00000016                 EXPORT           SVC_Handler         [WEAK]
+  287 00000016 E7FE            B                .
+  288 00000018                 ENDP
+  290 00000018         PendSV_Handler
+                               PROC
+  291 00000018                 EXPORT           PendSV_Handler         [WEAK]
+  292 00000018 E7FE            B                .
+  293 0000001A                 ENDP
+  295 0000001A         SysTick_Handler
+                               PROC
+  296 0000001A                 EXPORT           SysTick_Handler         [WEAK]
+  297 0000001A E7FE            B                .
+  298 0000001C                 ENDP
+  300 0000001C         DMA0_IRQHandler
+                               PROC
+  301 0000001C                 EXPORT           DMA0_IRQHandler         [WEAK]
+  302 0000001C 4810            LDR              R0, =DMA0_DriverIRQHandler
+  303 0000001E 4700            BX               R0
+  304 00000020                 ENDP
+  305 00000020         
+  307 00000020         DMA1_IRQHandler
+                               PROC
+  308 00000020                 EXPORT           DMA1_IRQHandler         [WEAK]
+  309 00000020 4810            LDR              R0, =DMA1_DriverIRQHandler
+  310 00000022 4700            BX               R0
+  311 00000024                 ENDP
+  312 00000024         
+  314 00000024         DMA2_IRQHandler
+                               PROC
+  315 00000024                 EXPORT           DMA2_IRQHandler         [WEAK]
+  316 00000024 4810            LDR              R0, =DMA2_DriverIRQHandler
+  317 00000026 4700            BX               R0
+  318 00000028                 ENDP
+  319 00000028         
+  321 00000028         DMA3_IRQHandler
+                               PROC
+  322 00000028                 EXPORT           DMA3_IRQHandler         [WEAK]
+  323 00000028 4810            LDR              R0, =DMA3_DriverIRQHandler
+  324 0000002A 4700            BX               R0
+  325 0000002C                 ENDP
+  326 0000002C         
+  328 0000002C         I2C0_IRQHandler
+                               PROC
+  329 0000002C                 EXPORT           I2C0_IRQHandler         [WEAK]
+  330 0000002C 4810            LDR              R0, =I2C0_DriverIRQHandler
+  331 0000002E 4700            BX               R0
+  332 00000030                 ENDP
+  333 00000030         
+  335 00000030         I2C1_IRQHandler
+
+
+
+ARM Macro Assembler    Page 9 
+
+
+                               PROC
+  336 00000030                 EXPORT           I2C1_IRQHandler         [WEAK]
+  337 00000030 4810            LDR              R0, =I2C1_DriverIRQHandler
+  338 00000032 4700            BX               R0
+  339 00000034                 ENDP
+  340 00000034         
+  342 00000034         SPI0_IRQHandler
+                               PROC
+  343 00000034                 EXPORT           SPI0_IRQHandler         [WEAK]
+  344 00000034 4810            LDR              R0, =SPI0_DriverIRQHandler
+  345 00000036 4700            BX               R0
+  346 00000038                 ENDP
+  347 00000038         
+  349 00000038         SPI1_IRQHandler
+                               PROC
+  350 00000038                 EXPORT           SPI1_IRQHandler         [WEAK]
+  351 00000038 4810            LDR              R0, =SPI1_DriverIRQHandler
+  352 0000003A 4700            BX               R0
+  353 0000003C                 ENDP
+  354 0000003C         
+  356 0000003C         LPUART0_IRQHandler
+                               PROC
+  357 0000003C                 EXPORT           LPUART0_IRQHandler         [WEA
+K]
+  358 0000003C 4810            LDR              R0, =LPUART0_DriverIRQHandler
+  359 0000003E 4700            BX               R0
+  360 00000040                 ENDP
+  361 00000040         
+  363 00000040         LPUART1_IRQHandler
+                               PROC
+  364 00000040                 EXPORT           LPUART1_IRQHandler         [WEA
+K]
+  365 00000040 4810            LDR              R0, =LPUART1_DriverIRQHandler
+  366 00000042 4700            BX               R0
+  367 00000044                 ENDP
+  368 00000044         
+  370 00000044         UART2_FLEXIO_IRQHandler
+                               PROC
+  371 00000044                 EXPORT           UART2_FLEXIO_IRQHandler        
+ [WEAK]
+  372 00000044 4810            LDR              R0, =UART2_FLEXIO_DriverIRQHand
+ler
+  373 00000046 4700            BX               R0
+  374 00000048                 ENDP
+  375 00000048         
+  377 00000048         I2S0_IRQHandler
+                               PROC
+  378 00000048                 EXPORT           I2S0_IRQHandler         [WEAK]
+  379 00000048 4810            LDR              R0, =I2S0_DriverIRQHandler
+  380 0000004A 4700            BX               R0
+  381 0000004C                 ENDP
+  382 0000004C         
+  384 0000004C         Default_Handler
+                               PROC
+  385 0000004C                 EXPORT           DMA0_DriverIRQHandler         [
+WEAK]
+  386 0000004C                 EXPORT           DMA1_DriverIRQHandler         [
+WEAK]
+  387 0000004C                 EXPORT           DMA2_DriverIRQHandler         [
+
+
+
+ARM Macro Assembler    Page 10 
+
+
+WEAK]
+  388 0000004C                 EXPORT           DMA3_DriverIRQHandler         [
+WEAK]
+  389 0000004C                 EXPORT           Reserved20_IRQHandler         [
+WEAK]
+  390 0000004C                 EXPORT           FTFA_IRQHandler         [WEAK]
+  391 0000004C                 EXPORT           PMC_IRQHandler         [WEAK]
+  392 0000004C                 EXPORT           LLWU_IRQHandler         [WEAK]
+  393 0000004C                 EXPORT           I2C0_DriverIRQHandler         [
+WEAK]
+  394 0000004C                 EXPORT           I2C1_DriverIRQHandler         [
+WEAK]
+  395 0000004C                 EXPORT           SPI0_DriverIRQHandler         [
+WEAK]
+  396 0000004C                 EXPORT           SPI1_DriverIRQHandler         [
+WEAK]
+  397 0000004C                 EXPORT           LPUART0_DriverIRQHandler       
+  [WEAK]
+  398 0000004C                 EXPORT           LPUART1_DriverIRQHandler       
+  [WEAK]
+  399 0000004C                 EXPORT           UART2_FLEXIO_DriverIRQHandler  
+       [WEAK]
+  400 0000004C                 EXPORT           ADC0_IRQHandler         [WEAK]
+  401 0000004C                 EXPORT           CMP0_IRQHandler         [WEAK]
+  402 0000004C                 EXPORT           TPM0_IRQHandler         [WEAK]
+  403 0000004C                 EXPORT           TPM1_IRQHandler         [WEAK]
+  404 0000004C                 EXPORT           TPM2_IRQHandler         [WEAK]
+  405 0000004C                 EXPORT           RTC_IRQHandler         [WEAK]
+  406 0000004C                 EXPORT           RTC_Seconds_IRQHandler         
+[WEAK]
+  407 0000004C                 EXPORT           PIT_IRQHandler         [WEAK]
+  408 0000004C                 EXPORT           I2S0_DriverIRQHandler         [
+WEAK]
+  409 0000004C                 EXPORT           USB0_IRQHandler         [WEAK]
+  410 0000004C                 EXPORT           DAC0_IRQHandler         [WEAK]
+  411 0000004C                 EXPORT           Reserved42_IRQHandler         [
+WEAK]
+  412 0000004C                 EXPORT           Reserved43_IRQHandler         [
+WEAK]
+  413 0000004C                 EXPORT           LPTMR0_IRQHandler         [WEAK
+]
+  414 0000004C                 EXPORT           LCD_IRQHandler         [WEAK]
+  415 0000004C                 EXPORT           PORTA_IRQHandler         [WEAK]
+  416 0000004C                 EXPORT           PORTCD_IRQHandler         [WEAK
+]
+  417 0000004C                 EXPORT           DefaultISR         [WEAK]
+  418 0000004C         DMA0_DriverIRQHandler
+  419 0000004C         DMA1_DriverIRQHandler
+  420 0000004C         DMA2_DriverIRQHandler
+  421 0000004C         DMA3_DriverIRQHandler
+  422 0000004C         Reserved20_IRQHandler
+  423 0000004C         FTFA_IRQHandler
+  424 0000004C         PMC_IRQHandler
+  425 0000004C         LLWU_IRQHandler
+  426 0000004C         I2C0_DriverIRQHandler
+  427 0000004C         I2C1_DriverIRQHandler
+  428 0000004C         SPI0_DriverIRQHandler
+  429 0000004C         SPI1_DriverIRQHandler
+  430 0000004C         LPUART0_DriverIRQHandler
+
+
+
+ARM Macro Assembler    Page 11 
+
+
+  431 0000004C         LPUART1_DriverIRQHandler
+  432 0000004C         UART2_FLEXIO_DriverIRQHandler
+  433 0000004C         ADC0_IRQHandler
+  434 0000004C         CMP0_IRQHandler
+  435 0000004C         TPM0_IRQHandler
+  436 0000004C         TPM1_IRQHandler
+  437 0000004C         TPM2_IRQHandler
+  438 0000004C         RTC_IRQHandler
+  439 0000004C         RTC_Seconds_IRQHandler
+  440 0000004C         PIT_IRQHandler
+  441 0000004C         I2S0_DriverIRQHandler
+  442 0000004C         USB0_IRQHandler
+  443 0000004C         DAC0_IRQHandler
+  444 0000004C         Reserved42_IRQHandler
+  445 0000004C         Reserved43_IRQHandler
+  446 0000004C         LPTMR0_IRQHandler
+  447 0000004C         LCD_IRQHandler
+  448 0000004C         PORTA_IRQHandler
+  449 0000004C         PORTCD_IRQHandler
+  450 0000004C         DefaultISR
+  451 0000004C 4810            LDR              R0, =DefaultISR
+  452 0000004E 4700            BX               R0
+  453 00000050                 ENDP
+  454 00000050                 ALIGN
+  455 00000050         
+  456 00000050         
+  457 00000050                 END
+              E000ED08 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+Command Line: --debug --diag_suppress=9931 --cpu=Cortex-M0+ --apcs=interwork --
+depend=debug\startup_mkl43z4.d -odebug\startup_mkl43z4.o -IC:\Users\b51443\Desk
+top\SDK_2.0_MKL33Z64xxx4\boards\customer\driver_examples\gpio\led_output\mdk\RT
+E -IC:\Freescale\Keil_v5\ARM\PACK\Keil\Kinetis_KLxx_DFP\1.6.0\Device\Include -I
+C:\Freescale\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predef
+ine="__UVISION_VERSION SETA 515" --predefine="MKL33Z64xxx4 SETA 1" --cpreproc_o
+pts=-DDEBUG --list=.\output\startup_mkl43z4.lst ../../../../../../devices/MKL43
+Z4/arm/startup_MKL43Z4.s

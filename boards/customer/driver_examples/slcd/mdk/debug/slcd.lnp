@@ -1,0 +1,20 @@
+--cpu Cortex-M0+
+"debug\startup_mkl43z4.o"
+"debug\system_mkl43z4.o"
+"debug\fsl_uart.o"
+"debug\fsl_lpuart.o"
+"debug\fsl_gpio.o"
+"debug\fsl_slcd.o"
+"debug\fsl_common.o"
+"debug\fsl_smc.o"
+"debug\fsl_clock.o"
+"debug\slcd.o"
+"debug\pin_mux.o"
+"debug\board.o"
+"debug\clock_config.o"
+"debug\fsl_debug_console.o"
+--library_type=microlib --diag_suppress 6314 --strict --scatter "MKL33Z64xxx4_flash.scf"
+--remove 
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\output\slcd.map" -o debug\slcd.out
